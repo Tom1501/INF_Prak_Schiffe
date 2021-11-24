@@ -1,4 +1,6 @@
 | server client protocol  | client sends | server response |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| ------------- | ------------- | ------------- |
+| shoot  | X , Y | Water, Ship_Hit, Ship_Destroyed, All_Ships_Destroyed, Game_Over |
+| new_game  | Restart  | Restarted |
+| end_Game  | BYEBYE  | BYEBYE |
+| ERROR  | "no valid command"  | ERROR |
