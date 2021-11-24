@@ -1,0 +1,6 @@
+import { table } from 'table';
+
+| server client protocol  | client sends | server response |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
