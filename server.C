@@ -16,35 +16,55 @@
 #include <sys/socket.h> // for socket creation
 #include <netinet/in.h> //contains constants and structures needed for internet domain addresses
 
+#include <iostream>
 #include "SIMPLESOCKET.H"
 
-class MyServer : public TCPserver{
+class MyServer:public TCPserver{
 public:
-    MyServer(int portNmb, int maxDataRecv) : TCPserver(portNmb, maxDataRecv){;};
-
+	MyServer(int portNMB,int maxSizeData):TCPserver(portNMB,maxSizeData){;};
 protected:
-string myResponse(string input);
-
+	string myResponse(string input);
 };
-
 
 int main(){
 	srand(time(nullptr));
-	TCPserver srv(2025,25);
+	TCPserver srv(2022,25);
 	srv.run();
 }
 
 
+
+
 string MyServer::myResponse(string input){
-	if( input.compare(0,4,"eins") == 0 ){
-		return string("1");
-		}else if( input.compare(0,4,"zwei") == 0 ){
-			return string("2");
-			} else if( input.compare(0,4,"drei") == 0 ){
-				return string("3");
-				}else if( input.compare(0,4,"vier") == 0 ){
-					return string("4");
-					}else if( input.compare(0,4,"fuenf") == 0 ){
-						return string("5");
-						} else {return string("ERROR");}
-};
+	int a,b,c;
+	string responseStr = string("0");
+	string responseBye = string("");
+
+	if(input.compare(0,4,"cmd(") == 0){
+		sscanf(input.c_str() , "cmd(%i,%i,%i)", &a, &b, &c );
+		std::cout << " a=" << a << " b=" << b << " c=" << c << std::endl;
+
+		responseStr = string("OK");
+		return responseStr;
+
+	}
+	int X,Y;
+
+
+	if(input.compare(0,6,"shoot(") == 0){
+		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
+		std::cout << " X=" << X << " Y=" << Y << std::endl;
+	}
+		else if(input.compare(0,9,"new_game(") == 0){
+			sscanf(input.c_str() , " new_game(");
+		}
+		else if(input.compare(0,9,"end_Game(") == 0){
+			sscanf(input.c_str() , " end_Game(");
+			responseBye = string("BYEBYE");
+			return responseBye;
+		}
+		else{
+			string responseStr = string("ERROR");
+			return responseStr;
+		}
+}
