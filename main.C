@@ -23,13 +23,33 @@
 #include "TASK5.H"
 #include "TASK6.H"
 
+using namespace TASK5;
 using namespace std;
 
 
 int main(){
-	srand(time(nullptr));
+	ConcreteObserver o1;
+	ConcreteObserver o2;
+	ConcreteObserver o3;
+	ConcreteObserver o4;
+	ConcreteSubject subject;
 
-    return 0;
+	subject.attach(&o1);
+	subject.attach(&o2);
+	subject.attach(&o3);
+	subject.attach(&o4);
+
+	o1.setSubject(&subject);
+	o2.setSubject(&subject);
+	o3.setSubject(&subject);
+	o4.setSubject(&subject);
+
+	subject.setState("Hello World");
+
+	subject.setState("New Data");
+
+
+
 }
 
 
