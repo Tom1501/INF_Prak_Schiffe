@@ -31,7 +31,7 @@ protected:
 
 int main(){
 	srand(time(nullptr));
-	MyServer srv(2016,25);
+	MyServer srv(2028,25);
 	srv.run();
 
 
@@ -42,9 +42,8 @@ int main(){
 string MyServer::myResponse(string input){
 	int a,b,c;
 	string responseStr = string("0");
-	string responseBye = string("0");
-	string responseNew = string("0");
-	string responseErr = string("0");
+	TASK3::ShootResult A;
+
 
 	if(input.compare(0,4,"cmd(") == 0){
 		sscanf(input.c_str() , "cmd(%i,%i,%i)", &a, &b, &c );
@@ -59,35 +58,33 @@ string MyServer::myResponse(string input){
 
 	if(input.compare(0,6,"shoot(") == 0){
 		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
-		std::cout << " X=" << X << " Y=" << Y << std::endl;
-			return responseStr;
+		A = w.shoot(X,Y);
+			if(A == TASK3::GAME_OVER){
+			return "GAME_OVER";}
+			else if(A == TASK3::WATER){
+			return "WATER";}
+			else if(A == TASK3::SHIP_HIT){
+			return "SHIP_HIT";}
+			else if(A == TASK3::SHIP_DESTROYED){
+			return "SHIP_DESTROYED";}
 
 	}
+
 		else if(input.compare(0,9,"new_game(") == 0){
 			sscanf(input.c_str() , " new_game(");
 			TASK3::World w;
-			TASK3::ShootResult res;
+			responseStr = string("Restarted");
+			return responseStr;
 
-				do{
-					w.printBoard();
-					return "Eingabe: X=(Zahl)";
-					sscanf(input.c_str() , "X=(%i)", &X);
-					return "Eingabe: Y=(Zahl)";
-					sscanf(input.c_str() , "Y=(%i)", &Y);
-					cout << X << Y << endl;
-					res = w.shoot(X,Y);
-					cout << "shoot: (" << X << ", " << Y << ") --> " << res << endl;
-				}while(res != TASK3::GAME_OVER);
-				w.printBoard();
-			return responseNew;
+
 		}
 		else if(input.compare(0,9,"end_game(") == 0){
 			sscanf(input.c_str() , " end_game(");
-			responseBye = string("BYEBYE");
-			return responseBye;
+			responseStr = string("BYEBYE");
+			return responseStr;
 		}
 		else{
-			string responseErr = string("ERROR..");
-			return responseErr;
+			responseStr = string("ERROR..");
+			return responseStr;
 		}
 }
