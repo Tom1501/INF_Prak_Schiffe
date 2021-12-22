@@ -18,6 +18,7 @@
 using namespace std;
 int Random1();
 int Random2();
+int Random3();
 
 	TCPclient c;
 
@@ -28,9 +29,9 @@ int main() {
 	string host = "localhost";
 	string msg;
 	int runs = 10;
-	int SumA = 0, SumB = 0;
+	int SumA = 0, SumB = 0, SumC = 0;
 	float CountField[10] = {};
-	int A, B;
+	int A, B, C;
 	float mean, SD;
 
 	//connect to host
@@ -69,7 +70,27 @@ int main() {
 	}
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 2: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
+
+
+
+
+
+	for(int i=0;i<runs;i++){ // Strategie 3 wird i mal ausgeführt und die schüsse im CountField gespeichert
+		C = Random3();
+		CountField[i+1] = C;
+		SumC = SumC + C;
+		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 3: " << i+1 << ". Versuch: " << C << std::endl;
+		}
+		mean = SumC/runs; // Summe berechnen
+		SD = 0;
+		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
+			SD += pow(CountField[i+1] - mean, 2);
+		}
+		std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 3: " << mean << std::endl;
+		std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 }
+
+
 
 
 	int Random1(){ // Strategie 1 schießt zufällig
@@ -104,7 +125,7 @@ int main() {
 	int X2, Y2;
 	std::stringstream ss2;
 	string msg2;
-	int Field[10][10] = {};
+	int Field[11][11] = {};
 	msg2 = "new_game()";
 	c.sendData(msg2);
 	msg2 = c.receive(32);
@@ -127,4 +148,36 @@ int main() {
 }
 	Part2:
 		return Count2;}
+
+
+	int Random3(){
+		int Count3 = 0;
+		int X3, Y3;
+
+		std::stringstream ss3;
+		string msg3;
+		int Field[11][11] = {};
+		msg3 = "new_game()";
+		c.sendData(msg3);
+		msg3 = c.receive(32);
+		while(1){
+			X3 = (rand()%10)+1;
+			Y3 = (rand()%10)+1;
+			TASK3::checkNeighborhood(int X3, int Y3);
+			if(Field [X3] [Y3] == 0){
+			ss3.str("");
+			ss3 << "shoot(" << X3 << "," << Y3 << ")";
+			msg3 = ss3.str();
+			c.sendData(msg3);
+			msg3 = c.receive(32);
+			Field[X3][Y3] = 1;
+			Count3++;
+			if(msg3.compare(0,9,"GAME_OVER") == 0){
+				goto Part3;
+			}
+			}
+
+	}
+		Part3:
+			return Count3;}
 

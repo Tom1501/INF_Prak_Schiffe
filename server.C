@@ -22,11 +22,11 @@
 
 class MyServer:public TCPserver{
 public:
-	MyServer(int portNMB,int maxSizeData):TCPserver(portNMB,maxSizeData){;};
+	MyServer(int portNMB,int maxSizeData):TCPserver(portNMB,maxSizeData){w=NULL;};
 protected:
 	string myResponse(string input);
 	TASK3::ShootResult res;
-	TASK3::World w;
+	TASK3::World *w;						//Pointer
 };
 
 int main(){
@@ -52,14 +52,21 @@ string MyServer::myResponse(string input){
 	}
 
 		 if(input.compare(0,9,"new_game(") == 0){ // unvollständig
-			sscanf(input.c_str() , " new_game(");
+			//sscanf(input.c_str() , " new_game(");
+			if(w==NULL){
+				w = new TASK3::World;
+			}else{
+				delete w;
+				w = new TASK3::World;
+
+			}
 			responseStr = string("Restarted");
 			return responseStr;
 		}
 		 else if(input.compare(0,6,"shoot(") == 0){
 		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
-		A = w.shoot(X,Y);
-		w.printBoard();
+		A = w->shoot(X,Y);
+		w->printBoard();
 			if(A == TASK3::GAME_OVER){
 			return "GAME_OVER";}
 			else if(A == TASK3::WATER){
