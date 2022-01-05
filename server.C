@@ -26,7 +26,7 @@ public:
 protected:
 	string myResponse(string input);
 	TASK3::ShootResult res;
-	TASK3::World *w;						//Pointer
+	TASK3::World *w;
 };
 
 int main(){
@@ -51,11 +51,11 @@ string MyServer::myResponse(string input){
 		return responseStr;
 	}
 
-	if(input.compare(0,9,"new_game(") == 0){ // unvollständig
-		//sscanf(input.c_str() , " new_game(");
+	if(input.compare(0,9,"new_game(") == 0){
 		if(w==NULL){
 			w = new TASK3::World;
-		}else{
+		}
+		else{
 			delete w;
 			w = new TASK3::World;
 		}
@@ -67,22 +67,24 @@ string MyServer::myResponse(string input){
 		A = w->shoot(X,Y);
 		w->printBoard();
 		if(A == TASK3::GAME_OVER){
-			return "GAME_OVER";}
+			return "GAME_OVER";
+		}
 		else if(A == TASK3::WATER){
-			return "WATER";}
+			return "WATER";
+		}
 		else if(A == TASK3::SHIP_HIT){
 			return "SHIP_HIT";}
 		else if(A == TASK3::SHIP_DESTROYED){
-			return "SHIP_DESTROYED";}
+			return "SHIP_DESTROYED";
 		}
-		else if(input.compare(0,9,"end_game(") == 0){ // unvollständig
-			//sscanf(input.c_str() , " end_game(");
-			responseStr = string("BYEBYE");
-			return responseStr;
-		}
-		else{
-			responseStr = string("ERROR");
-			return responseStr;
-		}
+	}
+	else if(input.compare(0,9,"end_game(") == 0){
+		responseStr = string("BYEBYE");
+		return responseStr;
+	}
+	else{
+		responseStr = string("ERROR");
+		return responseStr;
+	}
 }
 

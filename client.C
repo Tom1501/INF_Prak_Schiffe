@@ -27,7 +27,7 @@ int main() {
 
 	string host = "localhost";
 	string msg;
-	int runs = 10;
+	int runs = 1000;
 	int SumA = 0, SumB = 0, SumC = 0;
 	float CountField[10] = {};
 	int A, B, C;
@@ -41,7 +41,7 @@ int main() {
 		A = Random1();
 		CountField[i+1] = A;
 		SumA = SumA + A;
-		std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
+		std::cout << A << std::endl;
 	}
 	mean = SumA/runs; // Summe berechnen
 	SD = 0;
@@ -60,7 +60,7 @@ int main() {
 		B = Random2();
 		CountField[i+1] = B;
 		SumB = SumB + B;
-		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
+		std::cout << B << std::endl;
 	}
 	mean = SumB/runs; // Summe berechnen
 	SD = 0;
