@@ -43,9 +43,12 @@ int main() {
 			CountField[i+1] = A;
 			SumA = SumA + A;
 			std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
+
 		}
+
 	mean = SumA/runs; // Summe berechnen
 	SD = 0;
+
 		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
 			SD += pow(CountField[i+1] - mean, 2);
 		}
@@ -63,11 +66,14 @@ int main() {
 		SumB = SumB + B;
 		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
 		}
+
 	mean = SumB/runs; // Summe berechnen
 	SD = 0;
+
 		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
 			SD += pow(CountField[i+1] - mean, 2);
 		}
+
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 2: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 
@@ -85,6 +91,7 @@ int Random1(){ // Strategie 1 schießt zufällig
 	msg1 = "new_game()";
 	c.sendData(msg1);
 	msg1 = c.receive(32);
+
 	while(1){
 		X1 = (rand()%10)+1;
 		Y1 = (rand()%10)+1;
@@ -95,7 +102,6 @@ int Random1(){ // Strategie 1 schießt zufällig
 		c.sendData(msg1);
 		Count1++;
 		msg1 = c.receive(32);
-
 		if(msg1.compare(0,9,"GAME_OVER") == 0){
 			return Count1;
 		}
@@ -112,9 +118,11 @@ int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felde
 	msg2 = "new_game()";
 	c.sendData(msg2);
 	msg2 = c.receive(32);
+
 	while(1){
 		X2 = (rand()%10)+1;
 		Y2 = (rand()%10)+1;
+
 		if(Field [X2] [Y2] == 0){
 		ss2.str("");
 		ss2 << "shoot(" << X2 << "," << Y2 << ")";
