@@ -18,7 +18,7 @@
 using namespace std;
 int Random1();
 int Random2();
-int Random3();
+
 
 	TCPclient c;
 
@@ -38,17 +38,17 @@ int main() {
 	c.conn(host , 2044);
 
 
-	for(int i=0;i<runs;i++){ // Strategie 1 wird i mal ausgeführt und die schüsse im CountField gespeichert
-	A = Random1();
-	CountField[i+1] = A;
-	SumA = SumA + A;
-	std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
-	}
+		for(int i=0;i<runs;i++){ // Strategie 1 wird i mal ausgeführt und die schüsse im CountField gespeichert
+			A = Random1();
+			CountField[i+1] = A;
+			SumA = SumA + A;
+			std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
+		}
 	mean = SumA/runs; // Summe berechnen
 	SD = 0;
-	for(int i=0;i<runs;i++){ // Standardabweichung berechnen
-		SD += pow(CountField[i+1] - mean, 2);
-	}
+		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
+			SD += pow(CountField[i+1] - mean, 2);
+		}
 
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 1: " << mean << std::endl;
 
@@ -58,42 +58,27 @@ int main() {
 
 
 	for(int i=0;i<runs;i++){ // Strategie 2 wird i mal ausgeführt und die schüsse im CountField gespeichert
-	B = Random2();
-	CountField[i+1] = B;
-	SumB = SumB + B;
-	std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
-	}
+		B = Random2();
+		CountField[i+1] = B;
+		SumB = SumB + B;
+		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
+		}
 	mean = SumB/runs; // Summe berechnen
 	SD = 0;
-	for(int i=0;i<runs;i++){ // Standardabweichung berechnen
-		SD += pow(CountField[i+1] - mean, 2);
-	}
+		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
+			SD += pow(CountField[i+1] - mean, 2);
+		}
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 2: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 
 
 
-
-
-	for(int i=0;i<runs;i++){ // Strategie 3 wird i mal ausgeführt und die schüsse im CountField gespeichert
-		C = Random3();
-		CountField[i+1] = C;
-		SumC = SumC + C;
-		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 3: " << i+1 << ". Versuch: " << C << std::endl;
-		}
-		mean = SumC/runs; // Summe berechnen
-		SD = 0;
-		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
-			SD += pow(CountField[i+1] - mean, 2);
-		}
-		std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 3: " << mean << std::endl;
-		std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 }
 
 
 
 
-	int Random1(){ // Strategie 1 schießt zufällig
+int Random1(){ // Strategie 1 schießt zufällig
 	int Count1 = 0;
 	int X1, Y1;
 	string msg1;
@@ -112,15 +97,13 @@ int main() {
 		msg1 = c.receive(32);
 
 		if(msg1.compare(0,9,"GAME_OVER") == 0){
-			goto Part1;
+			return Count1;
 		}
+	}
 }
 
-	Part1:
-		return Count1;}
 
-
-	int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felder
+int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felder
 	int Count2 = 0;
 	int X2, Y2;
 	std::stringstream ss2;
@@ -141,16 +124,13 @@ int main() {
 		Field[X2][Y2] = 1;
 		Count2++;
 		if(msg2.compare(0,9,"GAME_OVER") == 0){
-			goto Part2;
+			return Count2;
+			}
 		}
-		}
-
+	}
 }
-	Part2:
-		return Count2;}
-
-
-	int Random3(){
+/*
+ int Random3(){
 		int Count3 = 0;
 		int X3, Y3;
 
@@ -173,11 +153,10 @@ int main() {
 			Field[X3][Y3] = 1;
 			Count3++;
 			if(msg3.compare(0,9,"GAME_OVER") == 0){
-				goto Part3;
+				return Count3;
 			}
-			}
+		}
 
 	}
-		Part3:
-			return Count3;}
+			*/
 
