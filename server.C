@@ -22,16 +22,16 @@
 
 class MyServer:public TCPserver{
 public:
-	MyServer(int portNMB,int maxSizeData):TCPserver(portNMB,maxSizeData){;};
+	MyServer(int portNMB,int maxSizeData):TCPserver(portNMB,maxSizeData){w=NULL;};
 protected:
 	string myResponse(string input);
 	TASK3::ShootResult res;
-	TASK3::World w;
+	TASK3::World *w;						//Pointer
 };
 
 int main(){
 	srand(time(nullptr));
-	MyServer srv(2044,25);
+	MyServer srv(2050,25);
 	srv.run();
 }
 
@@ -51,24 +51,30 @@ string MyServer::myResponse(string input){
 		return responseStr;
 	}
 
-		 if(input.compare(0,9,"new_game(") == 0){ // unvollständig
-			sscanf(input.c_str() , " new_game(");
-			responseStr = string("Restarted");
-			return responseStr;
+	if(input.compare(0,9,"new_game(") == 0){ // unvollständig
+		//sscanf(input.c_str() , " new_game(");
+		if(w==NULL){
+			w = new TASK3::World;
+		}else{
+			delete w;
+			w = new TASK3::World;
 		}
-		 else if(input.compare(0,6,"shoot(") == 0){
-		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
-		A = w.shoot(X,Y);
-		w.printBoard();
-			if(A == TASK3::GAME_OVER){
-			return "GAME_OVER";}
-			else if(A == TASK3::WATER){
-			return "WATER";}
-			else if(A == TASK3::SHIP_HIT){
-			return "SHIP_HIT";}
-			else if(A == TASK3::SHIP_DESTROYED){
-			return "SHIP_DESTROYED";}
+		responseStr = string("Restarted");
+		return responseStr;
 	}
+	else if(input.compare(0,6,"shoot(") == 0){
+		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
+		A = w->shoot(X,Y);
+		w->printBoard();
+		if(A == TASK3::GAME_OVER){
+			return "GAME_OVER";}
+		else if(A == TASK3::WATER){
+			return "WATER";}
+		else if(A == TASK3::SHIP_HIT){
+			return "SHIP_HIT";}
+		else if(A == TASK3::SHIP_DESTROYED){
+			return "SHIP_DESTROYED";}
+		}
 		else if(input.compare(0,9,"end_game(") == 0){ // unvollständig
 			//sscanf(input.c_str() , " end_game(");
 			responseStr = string("BYEBYE");
@@ -79,3 +85,4 @@ string MyServer::myResponse(string input){
 			return responseStr;
 		}
 }
+

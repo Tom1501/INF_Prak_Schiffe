@@ -28,20 +28,20 @@ int main() {
 	string host = "localhost";
 	string msg;
 	int runs = 10;
-	int SumA = 0, SumB = 0;
+	int SumA = 0, SumB = 0, SumC = 0;
 	float CountField[10] = {};
-	int A, B;
+	int A, B, C;
 	float mean, SD;
 
 	//connect to host
-	c.conn(host , 2044);
+	c.conn(host , 2050);
 
 
 	for(int i=0;i<runs;i++){ // Strategie 1 wird i mal ausgeführt und die schüsse im CountField gespeichert
-	A = Random1();
-	CountField[i+1] = A;
-	SumA = SumA + A;
-	std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
+		A = Random1();
+		CountField[i+1] = A;
+		SumA = SumA + A;
+		std::cout << "Anzahl Schüsse bei Zufallsstrategie 1: " << i+1 << ". Versuch: " << A << std::endl;
 	}
 	mean = SumA/runs; // Summe berechnen
 	SD = 0;
@@ -57,10 +57,10 @@ int main() {
 
 
 	for(int i=0;i<runs;i++){ // Strategie 2 wird i mal ausgeführt und die schüsse im CountField gespeichert
-	B = Random2();
-	CountField[i+1] = B;
-	SumB = SumB + B;
-	std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
+		B = Random2();
+		CountField[i+1] = B;
+		SumB = SumB + B;
+		std::cout << "Anzahl benötigter Schüsse bei Zufallsstrategie 2: " << i+1 << ". Versuch: " << B << std::endl;
 	}
 	mean = SumB/runs; // Summe berechnen
 	SD = 0;
@@ -70,6 +70,8 @@ int main() {
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 2: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 }
+
+
 
 
 	int Random1(){ // Strategie 1 schießt zufällig
@@ -91,12 +93,10 @@ int main() {
 		msg1 = c.receive(32);
 
 		if(msg1.compare(0,9,"GAME_OVER") == 0){
-			goto Part1;
+			return Count1;
 		}
+	}
 }
-
-	Part1:
-		return Count1;}
 
 
 	int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felder
@@ -104,7 +104,7 @@ int main() {
 	int X2, Y2;
 	std::stringstream ss2;
 	string msg2;
-	int Field[10][10] = {};
+	int Field[11][11] = {};
 	msg2 = "new_game()";
 	c.sendData(msg2);
 	msg2 = c.receive(32);
@@ -120,11 +120,8 @@ int main() {
 		Field[X2][Y2] = 1;
 		Count2++;
 		if(msg2.compare(0,9,"GAME_OVER") == 0){
-			goto Part2;
+			return Count2;
+			}
 		}
-		}
-
+	}
 }
-	Part2:
-		return Count2;}
-
