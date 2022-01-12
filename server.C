@@ -31,7 +31,7 @@ protected:
 
 int main(){
 	srand(time(nullptr));
-	MyServer srv(2050,25);
+	MyServer srv(2050,25); // Kommunikationskanal wird aufgebaut
 	srv.run();
 }
 
@@ -51,22 +51,22 @@ string MyServer::myResponse(string input){
 		return responseStr;
 	}
 
-	if(input.compare(0,9,"new_game(") == 0){
+	if(input.compare(0,9,"new_game(") == 0){ // Aufruf zum Spielneustart
 		if(w==NULL){
-			w = new TASK3::World;
+			w = new TASK3::World; // Wenn keine Welt existiert, wird eine Welt w erzeugt
 		}
 		else{
 			delete w;
-			w = new TASK3::World;
+			w = new TASK3::World; // Wenn eine Welt existiert, wird die Welt gelöscht und dann eine neue erstellt
 		}
 		responseStr = string("Restarted");
 		return responseStr;
 	}
 	else if(input.compare(0,6,"shoot(") == 0){
 		sscanf(input.c_str() , " shoot(%i,%i)", &X, &Y );
-		A = w->shoot(X,Y);
+		A = w->shoot(X,Y); // Schussresultat wird ermittelt
 		w->printBoard();
-		if(A == TASK3::GAME_OVER){
+		if(A == TASK3::GAME_OVER){ // Schussresultat wird an den client zurückgegebenS
 			return "GAME_OVER";
 		}
 		else if(A == TASK3::WATER){
@@ -79,6 +79,7 @@ string MyServer::myResponse(string input){
 		}
 	}
 	else if(input.compare(0,9,"end_game(") == 0){
+		delete w; // Welt wird gelöscht
 		responseStr = string("BYEBYE");
 		return responseStr;
 	}
