@@ -20,6 +20,7 @@ int Random1(); // deklaration der drei Strategien
 int Random2();
 int Inteli();
 
+
 	TCPclient c;
 
 
@@ -37,7 +38,6 @@ int main() {
 	//connect to host
 	c.conn(host , 2050);
 
-
 	for(int i=0;i<runs;i++){ // Strategie 1 wird i mal ausgeführt und die schüsse im CountField gespeichert
 		A = Random1();
 		CountField[i+1] = A;
@@ -49,6 +49,7 @@ int main() {
 	for(int i=0;i<runs;i++){ // Standardabweichung berechnen
 		SD += pow(CountField[i+1] - mean, 2);
 	}
+
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 1: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
 
@@ -61,12 +62,13 @@ int main() {
 	}
 	mean = SumB/runs; // Summe berechnen
 	SD = 0;
-	for(int i=0;i<runs;i++){ // Standardabweichung berechnen
-		SD += pow(CountField[i+1] - mean, 2);
-	}
+
+		for(int i=0;i<runs;i++){ // Standardabweichung berechnen
+			SD += pow(CountField[i+1] - mean, 2);
+		}
+
 	std::cout << "Anzahl durchschnittlicher Schüsse bei Zufallsstrategie 2: " << mean << std::endl;
 	std::cout << "Standardabweichung: " << sqrt(SD/10) << std::endl;
-
 
 	for(int i=0;i<runs;i++){ // Strategie 3 wird i mal ausgeführt und die schüsse im CountField gespeichert
 		C = Inteli();
@@ -93,6 +95,7 @@ int Random1(){ // Strategie 1 schießt zufällig
 	msg1 = "new_game()";
 	c.sendData(msg1);
 	msg1 = c.receive(32);
+
 	while(1){
 		X1 = (rand()%10)+1;
 		Y1 = (rand()%10)+1;
@@ -110,7 +113,7 @@ int Random1(){ // Strategie 1 schießt zufällig
 }
 
 
-	int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felder
+int Random2(){ // Strategie 2 schießt zufällig, jedoch nicht doppelt auf felder
 	int Count2 = 0;
 	int X2, Y2;
 	std::stringstream ss2;
@@ -119,9 +122,11 @@ int Random1(){ // Strategie 1 schießt zufällig
 	msg2 = "new_game()";
 	c.sendData(msg2);
 	msg2 = c.receive(32);
+
 	while(1){
 		X2 = (rand()%10)+1;
 		Y2 = (rand()%10)+1;
+
 		if(Field [X2] [Y2] == 0){
 			ss2.str("");
 			ss2 << "shoot(" << X2 << "," << Y2 << ")";
